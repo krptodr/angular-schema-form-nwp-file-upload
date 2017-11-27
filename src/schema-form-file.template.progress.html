@@ -1,0 +1,32 @@
+<div class="row mb">
+  <div class="col-sm-4 mb-sm">
+     <label title="{{ 'modules.upload.field.preview' | translate }}" class="text-info">{{
+        'modules.upload.field.preview' | translate }}</label>
+     <img ngf-src="picFile" class="img-thumbnail img-responsive">
+     <div class="img-placeholder"
+          ng-class="{'show': picFile.$invalid && !picFile.blobUrl, 'hide': !picFile || picFile.blobUrl}">No preview available
+     </div>
+  </div>
+  <div class="col-sm-4 mb-sm">
+     <label title="{{ 'modules.upload.field.filename' | translate }}" class="text-info">{{
+        'modules.upload.field.filename' | translate }}</label>
+     <div class="filename" title="{{ picFile.name }}">{{ picFile.name }}</div>
+  </div>
+  <div class="col-sm-4 mb-sm">
+     <label title="{{ 'modules.upload.field.progress' | translate }}" class="text-info">{{
+        'modules.upload.field.progress' | translate }}</label>
+     <div class="progress">
+        <div class="progress-bar progress-bar-striped" role="progressbar"
+             ng-class="{'progress-bar-success': picFile.progress == 100}"
+             ng-style="{width: picFile.progress + '%'}">
+           {{ picFile.progress }} %
+        </div>
+     </div>
+     <button class="btn btn-primary btn-sm" type="button" ng-click="uploadFile(picFile)"
+             ng-disabled="ngModel.$error.requireMetadata||!picFile || picFile.result || picFile.$error">{{ !picFile.result ?  "buttons.upload" : "buttons.uploaded" | translate }}
+     </button>
+     <button class="btn btn-danger btn-sm" type="button" ng-click="removeFile(picFile)"
+             ng-disabled="!picFile">{{ "buttons.remove" | translate }}
+     </button>
+  </div>
+</div>

@@ -1,0 +1,7 @@
+<div ng-messages="uploadForm.$error" ng-messages-multiple="">
+  <div class="text-danger errorMsg" ng-message="maxSize">{{ interpValidationMessage(picFile) }}</div>
+  <div class="text-danger errorMsg" ng-message="mimeType">{{ interpValidationMessage(picFile) }}</div>
+  <div class="text-danger errorMsg" ng-message="maxItems">{{ interpValidationMessage(picFile) }}</div>
+  <div class="text-danger errorMsg" ng-message="minItems">{{ interpValidationMessage(picFile) }}</div>
+  <div class="text-danger errorMsg" ng-show="errorMsg">{{ errorMsg }}</div>
+</div>

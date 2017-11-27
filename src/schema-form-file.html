@@ -1,0 +1,27 @@
+<ng-form class="file-upload mb-lg" ng-schema-file schema-validate="form" sf-field-model="replaceAll" ng-model="$$value$$" name="uploadForm">
+  <label ng-show="form.title && form.notitle !== true" class="control-label" for="fileInputButton" ng-class="{'sr-only': !showTitle(), 'text-danger': uploadForm.$error.required && !uploadForm.$pristine}">
+    {{::form.title}}<i ng-show="form.required">&nbsp;*</i>
+  </label>
+
+  <div ng-show="picFile" class="well well-sm bg-white mb" ng-class="{'has-error border-danger': (uploadForm.$error.required && !uploadForm.$pristine) || (hasError() && errorMessage(schemaError()))}">
+    <div ng-include="'directives/decorators/bootstrap/nwp-file/schema-form-file.template.progress.html'" class="mb"></div>
+    <div ng-include="'directives/decorators/bootstrap/nwp-file/schema-form-file.template.errors.html'" class="mb"></div>
+    <span class="help-block" sf-message="form.description"></span>
+  </div>
+
+  <ul ng-show="picFiles && picFiles.length" class="list-group">
+    <li class="list-group-item" ng-repeat="picFile in picFiles">
+      <div ng-include="'directives/decorators/bootstrap/nwp-file/schema-form-file.template.progress.html'"></div>
+      <div ng-include="'directives/decorators/bootstrap/nwp-file/schema-form-file.template.errors.html'" class="mb"></div>
+    </li>
+  </ul>
+<pre>{{isSinglefileUpload| json}}</pre>
+  <div ng-show="(isSinglefileUpload && !picFile) || (!isSinglefileUpload && (!picFiles || !picFiles.length))" class="well well-sm bg-white mb" ng-class="{'has-error border-danger': (uploadForm.$error.required && !uploadForm.$pristine) || (hasError() && errorMessage(schemaError()))}">
+    <small class="text-muted" ng-show="form.description" ng-bind-html="form.description"></small>
+    <div ng-if="isSinglefileUpload" ng-include="'directives/decorators/bootstrap/nwp-file/schema-form-file.template.single.html'"></div>
+    <div ng-if="!isSinglefileUpload" ng-include="'directives/decorators/bootstrap/nwp-file/schema-form-file.template.multiple.html'"></div>
+    <!--<div class="help-block mb0" ng-show="uploadForm.$error.required && !uploadForm.$pristine">{{ 'modules.attribute.fields.required.caption' | translate }}</div>-->
+    <span ng-if="errorMsg" class="text-danger">{{ errorMsg }}</span>
+    <span class="help-block" sf-message="form.description"></span>
+  </div>
+</ng-form>
