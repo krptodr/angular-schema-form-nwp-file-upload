@@ -14,7 +14,8 @@ angular
              defaultMaxSizeMsg1 = 'This file is too large. Maximum size allowed is ',
              defaultMaxSizeMsg2 = 'Current file size:',
              defaultMinItemsMsg = 'You have to upload at least one file',
-             defaultMaxItemsMsg = 'You can\'t upload more than one file.';
+             defaultMaxItemsMsg = 'You can\'t upload more than one file.',
+             defaultPriority = 1;
 
          var nwpSinglefileUpload = function (name, schema, options) {
             if (schema.type === 'array' && schema.format === 'singlefile') {
@@ -71,7 +72,7 @@ angular
          schemaFormDecoratorsProvider.addMapping(
             'bootstrapDecorator',
             'nwpFileUpload',
-            'directives/decorators/bootstrap/nwp-file/nwp-file.html'
+            'directives/decorators/bootstrap/nwp-file/schema-form-file.html'
          );
       }
    ]);
@@ -92,9 +93,12 @@ angular
 
             scope.selectFile  = function (file) {
                scope.picFile = file;
+               if (file && file != null && file.length > 0)
+               scope.uploadFile(file);
             };
             scope.selectFiles = function (files) {
                scope.picFiles = files;
+               scope.uploadFiles(files);
             };
 
             scope.uploadFile = function (file) {
@@ -107,34 +111,75 @@ angular
                });
             };
 
+            
+            var fileResult = null;
+
             function doUpload(file) {
                if (file && !file.$error && scope.url) {
                   var options = {
                      url: scope.url,
-                     file: {}
+                     data: { 
+                         file: {},
+                         eventId: {},
+                         userId: {},
+                         priority: scope.form.schema.priority
+                     }
                   };
-                  options.file[scope.form.fileName || 'file'] = file;
+                  
+                  options.data[scope.form.fileName || 'file'] = file;
+                  options.data['eventId'] = submissionService.getReportType().reportType.value;
+                  options.data['userId'] = submissionService.getUserId();
                   file.upload = Upload.upload(options);
 
                   file.upload.then(function (response) {
-                     $timeout(function () {
-                        file.result = response.data;
-                     });
-                     var result = scope.form.post ? scope.form.post(response.data) : response.data;
-                     ngModel.$setViewValue(result);
-                     ngModel.$commitViewValue();
+                      $timeout(function () {
+                          file.result = response.data.message;
+                          file.uuid = fileResult.file[0].uuid;
+                          file.uploadCompleted = true;
+                          file.progress = 100;
+                      });
+                      fileResult = scope.form.post ? scope.form.post(response.data) : response.data;
+                      ngModel.$setViewValue(fileResult.file[0]);
+                      ngModel.$commitViewValue();
                   }, function (response) {
-                     if (response.status > 0) {
-                        scope.errorMsg = response.status + ': ' + response.data;
-                     }
+                      if (response.status > 0) {
+                          file.errorMsg = response.status + ': ' + response.data.message;
+                      } else if (response.status == -1) {
+                          file.errorMsg = "Error: trouble connecting to the server, please verify you have internet access.";
+                      }
+                  }).then(function () {
+                      if (fileResult && fileResult != null && fileResult.file)
+                          fileService.setFile(fileResult.file[0]);
                   });
 
                   file.upload.progress(function (evt) {
-                     file.progress = Math.min(100, parseInt(100.0 *
-                        evt.loaded / evt.total));
+                      file.progress = Math.min(100, parseInt(100.0 *
+                          evt.loaded / evt.total));
+                      if (file.progress == 100 && !file.uploadCompleted) {
+                          //because we need the response to return, we aren't truely at 100% complete, until the reponse is returned. ng-file-upload says we're at 100% when the file is sent to the server.
+                          file.progress = 99;
+                      }
                   });
-               }
-            }
+              }
+          }
+
+          scope.deleteFile = function (index) {
+            if (angular.isDefined(scope.picFile)) {
+                if (fileResult && fileResult != null && fileResult.file)
+                    scope.fileService.deleteFile(scope.picFile.uuid);
+                scope.picFile = null;
+                ngModel.$setViewValue(scope.picFile);
+                ngModel.$commitViewValue();
+            } else {
+                if (fileResult && fileResult != null && fileResult.file)
+                    scope.fileService.deleteFile(scope.picFiles[index].uuid);
+                scope.picFiles.splice(index, 1);
+                ngModel.$setViewValue(scope.picFiles);
+                ngModel.$commitViewValue();
+            };
+            fileResult = null;
+            //scope.errorMsg = null;
+        };
 
             scope.validateField = function () {
                if (scope.uploadForm.file && scope.uploadForm.file.$valid && scope.picFile && !scope.picFile.$error) {
