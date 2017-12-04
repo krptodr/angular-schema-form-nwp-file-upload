@@ -1,21 +1,10 @@
-<div ngf-drop="selectFiles(picFiles)" ngf-select="selectFiles(picFiles)" type="file" ngf-multiple="true"
+<div ngf-drop="selectFiles(picFiles, $invalidFiles)" ngf-select="selectFiles(picFiles, $invalidFiles)" type="file" ngf-multiple="true"
     ng-model="picFiles" name="files"
-    ng-attr-ngf-mimeType="{{::form.schema.mimeType ? form.schema.mimeType : undefined }}"
-    ng-attr-ngf-max-size="{{::form.schema.maxSize ? form.schema.maxSize : undefined }}"
+    ng-attr-ngf-pattern="{{form.schema.pattern && form.schema.pattern.mimeType ? form.schema.pattern.mimeType : undefined }}"
+    ng-attr-ngf-max-size="{{form.schema.maxSize && form.schema.maxSize.maximum ? form.schema.maxSize.maximum : undefined }}"
     ng-required="form.required"
-    accept="{{::form.schema.mimeType}}"
+    accept="{{::form.schema.pattern.mimeType}}"
     ng-model-options="form.ngModelOptions" ngf-drag-over-class="dragover" class="drop-box dragAndDropDescription">
   <p class="text-center">{{ 'modules.upload.descriptionMultifile' | translate }}</p>
 </div>
 <div ngf-no-file-drop>{{ 'modules.upload.dndNotSupported' | translate}}</div>
-
-<button ngf-select="selectFiles(picFiles)" type="file" ngf-multiple="true" multiple ng-model="picFiles" name="files"
-       ng-attr-ngf-mimeType="{{::form.schema.mimeType ? form.schema.mimeType : undefined }}"
-       ng-attr-ngf-max-size="{{::form.schema.maxSize ? form.schema.maxSize : undefined }}"
-       ng-required="form.required"
-       accept="{{::form.schema.mimeType}}"
-       ng-model-options="form.ngModelOptions" id="fileInputButton"
-       class="btn btn-primary btn-block {{::form.htmlClass}} mt-lg mb">
-  <fa fw="fw" name="upload" class="mr-sm"></fa>
-  {{:: 'buttons.add' | translate }}
-</button>

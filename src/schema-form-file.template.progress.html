@@ -1,32 +1,49 @@
 <div class="row mb">
-  <div class="col-sm-4 mb-sm">
-     <label title="{{ 'modules.upload.field.preview' | translate }}" class="text-info">{{
-        'modules.upload.field.preview' | translate }}</label>
-     <img ngf-src="picFile" class="img-thumbnail img-responsive">
-     <div class="img-placeholder"
-          ng-class="{'show': picFile.$invalid && !picFile.blobUrl, 'hide': !picFile || picFile.blobUrl}">No preview available
-     </div>
-  </div>
-  <div class="col-sm-4 mb-sm">
-     <label title="{{ 'modules.upload.field.filename' | translate }}" class="text-info">{{
-        'modules.upload.field.filename' | translate }}</label>
-     <div class="filename" title="{{ picFile.name }}">{{ picFile.name }}</div>
-  </div>
-  <div class="col-sm-4 mb-sm">
-     <label title="{{ 'modules.upload.field.progress' | translate }}" class="text-info">{{
-        'modules.upload.field.progress' | translate }}</label>
-     <div class="progress">
-        <div class="progress-bar progress-bar-striped" role="progressbar"
-             ng-class="{'progress-bar-success': picFile.progress == 100}"
-             ng-style="{width: picFile.progress + '%'}">
-           {{ picFile.progress }} %
+    <!---->
+    <div class="col-xs-1 mb-sm">
+        <!---->
+        <label title="Result" class="text-info">&nbsp;</label>
+        <div class="img-placeholder">
+            <span class="fa fa-2x" aria-hidden="true" ng-class="{'fa-check-circle-o text-success show': picFile.result && picFile.progress == 100,
+                        'fa-exclamation-circle show text-danger': picFile.errorMsg,
+                        'fa-refresh fa-spin fa-fw text-primary show': (picFile.progress >= 0 && picFile.progress < 100) && !picFile.errorMsg}"
+                uib-tooltip="{{ (picFile.progress >= 0 && picFile.progress < 100) ? 'Uploading...' : '' || picFile.result || (picFile.errorMsg) ? 'See message below for more details.' : ''}}"
+                tooltip-placement="top" tooltip-trigger="'mouseenter'">
+                <!--, 'hide': !picFile.progress || picFile.progress != 100-->
+            </span>
+
         </div>
-     </div>
-     <button class="btn btn-primary btn-sm" type="button" ng-click="uploadFile(picFile)"
-             ng-disabled="ngModel.$error.requireMetadata||!picFile || picFile.result || picFile.$error">{{ !picFile.result ?  "buttons.upload" : "buttons.uploaded" | translate }}
-     </button>
-     <button class="btn btn-danger btn-sm" type="button" ng-click="removeFile(picFile)"
-             ng-disabled="!picFile">{{ "buttons.remove" | translate }}
-     </button>
-  </div>
+    </div>
+    <div class="col-xs-9 col-sm-6 mb-sm">
+        <!--col-sm-8 -->
+        <label title="{{ form.i18n.filename ? form.i18n.filename : ('modules.upload.field.filename' | translate)  }}" class="text-info">{{ form.i18n.filename ? form.i18n.filename : ('modules.upload.field.filename' | translate)}}</label>
+        <div class="filename" title="{{ picFile.name }}">{{ picFile.name }}</div>
+    </div>
+
+    
+    <div class="col-sm-2 hidden-xs">
+            <label title="Result" class="text-info">Size</label>
+            <small ng-switch="fileService.file.size > 1024*1024">
+                <small ng-switch-when="true">({{picFile.size / 1024 / 1024 | number:2}} Mb)</small>
+                <small ng-switch-default>({{picFile.size / 1024 | number:2}} kB)</small>
+            </small>
+        </div>
+
+    <div class="col-xs-5 col-sm-2 hidden-xs mb-sm">
+        <!--col-sm-2 -->
+        <label title="{{ form.i18n.progress ? form.i18n.progress : ('modules.upload.field.progress' | translate)  }}" class="text-info">{{ form.i18n.progress ? form.i18n.progress : ('modules.upload.field.progress' | translate) }}</label>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped" role="progressbar" ng-class="{'progress-bar-success': picFile.progress == 100}"
+                ng-style="{width: picFile.progress + '%'}">
+                {{ picFile.progress ? picFile.progress : 0 }} %
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-1 col-sm-1 mb-sm">
+        <label title="Result" class="text-info">&nbsp;</label>
+        <!--col-sm-1 -->
+        <button class="btn btn-xs btn-danger" type="button" ng-click="removeFile(picFile, $index)">
+            <span class="glyphicon glyphicon-remove"></span>
+        </button>
+    </div>
 </div>
