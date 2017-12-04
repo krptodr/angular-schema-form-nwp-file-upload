@@ -5,8 +5,8 @@ var myApp = angular.module('formApp', [
         'pascalprecht.translate',
         'ngSchemaFormFile'
     ])
-    .controller('formController', ['$scope', '$q', function($scope, $q) {
-
+    .controller('formController', ['$scope', '$q', '$translate', function($scope, $q, $translate) {
+        $translate.use('en');
         $scope.schema = {
             "type": "object",
             "title": "Album",
@@ -16,14 +16,14 @@ var myApp = angular.module('formApp', [
                     "type": "array",
                     "format": "singlefile",
                     "x-schema-form": {
-                        "type": "array"
+                        "type": "object"
                     },
                     "pattern": {
-                        "mimeType": "image/*",
+                        "mimeType": "image/*, !.jpg",
                         "validationMessage": "Falscher Dateityp: "
                     },
                     "maxSize": {
-                        "maximum": "2MB",
+                        "maximum": "2b",
                         "validationMessage": "Erlaubte Dateigröße überschritten: ",
                         "validationMessage2": "Aktuelle Dateigröße: "
                     },
@@ -42,11 +42,11 @@ var myApp = angular.module('formApp', [
                         "type": "array"
                     },
                     "pattern": {
-                        "mimeType": "image/*,!.gif",
+                        "mimeType": "image/*",
                         "validationMessage": "Falscher Dateityp: "
                     },
                     "maxSize": {
-                        "maximum": "2MB",
+                        "maximum": "2b",
                         "validationMessage": "Erlaubte Dateigröße überschritten: ",
                         "validationMessage2": "Aktuelle Dateigröße: "
                     },
@@ -104,7 +104,21 @@ var myApp = angular.module('formApp', [
             'modules.upload.multiFileUpload': 'Multifile upload',
             'modules.upload.field.progress': 'Progress',
             'buttons.upload': 'Upload'
+        }); 
+        $translateProvider.translations('de', {
+            'modules.upload.dndNotSupported': 'Drag & Drop nicht von Ihrem Browser übertroffen',
+            'modules.attribute.fields.required.caption': 'Erforderlich',
+            'modules.upload.descriptionSinglefile': 'Legen Sie Ihre Datei hier ab',
+            'modules.upload.descriptionMultifile': 'Legen Sie Ihre Datei (en) hier ab',
+            'buttons.add': 'Öffnen Sie den Dateibrowser',
+            'modules.upload.field.filename': 'Dateiname',
+            'modules.upload.field.preview': 'Vorschau',
+            'modules.upload.multiFileUpload': 'Multi-Upload',
+            'modules.upload.field.progress': 'PrFortschrittogress',
+            'buttons.upload': 'Hochladen'
         });
         $translateProvider.preferredLanguage('en');
+        $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
+    
 
     }]);

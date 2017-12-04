@@ -59,3 +59,49 @@
 .mb {
   margin-bottom: 10px !important;
 }
+
+
+
+.progress {
+  -webkit-transition: color 0.6s, background-color 0.3s;
+-moz-transition: color 0.6s, background-color 0.3s;
+-ms-transition: color 0.6s, background-color 0.3s;
+transition: color 0.6s, background-color 0.3s;
+
+  &.ng-enter {
+  -webkit-animation: fadeInLeft 1s;
+  -moz-animation: fadeInLeft 1s;
+  -ms-animation: fadeInLeft 1s;
+  animation: fadeInLeft 1s;
+}
+
+&.ng-leave {
+  -webkit-animation: bounceOut 1s;
+  -moz-animation: bounceOut 1s;
+  -ms-animation: bounceOut 1s;
+  animation: bounceOut 1s;
+}
+}
+
+
+
+.dropbox {
+  width: 15em;
+  height: 15px;
+  border: 2px solid #DDD;
+  border-radius: 8px;
+  background-color: #FEFFEC;
+  text-align: center;
+  color: #BBB;
+  font-size: 2em;
+  font-family: Arial, sans-serif;
+}
+.dropbox span {
+  margin-top: 0.9em;
+  display: block;
+}
+.dropbox.not-available {
+  background-color: #F88;
+}
+.dragover {
+  border: #bfb 5px dashed !important;
