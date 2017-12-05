@@ -44,6 +44,7 @@
   <ul ng-show="picFiles && picFiles.length" class="list-group">
     <li class="list-group-item" ng-repeat="picFile in picFiles">
       <div ng-include="'directives/decorators/bootstrap/nwp-file/schema-form-file.template.progress.html'"></div>
+      <span ng-show="picFile.errorMsg" class="help-block has-error mb0">{{ picFile.errorMsg }}</span>
       <!-- <div ng-include="'directives/decorators/bootstrap/nwp-file/schema-form-file.template.errors.html'" class="mb"></div> -->
     </li>
   </ul>
