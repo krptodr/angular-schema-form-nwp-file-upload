@@ -115,6 +115,16 @@ angular
             };
 
             
+
+function _mergeDataToNgModelValue (model) {
+              if (ngModel.$modelValue) {
+                ngModel.$setViewValue(angular.merge(ngModel.$modelValue, model));
+              } else {
+                ngModel.$setViewValue(model);
+              }
+              ngModel.$commitViewValue();
+            }
+
             var fileResult = null;
 
             function doUpload(file) {
@@ -142,8 +152,7 @@ angular
                           file.progress = 100;
                       });
                       fileResult = scope.form.post ? scope.form.post(response.data) : response.data;
-                      ngModel.$setViewValue(fileResult.file);
-                      ngModel.$commitViewValue();
+                      _mergeDataToNgModelValue(fileResult.file);
                   }, function (response) {
                       if (response.status > 0) {
                           file.errorMsg = response.status + ': ' + response.data.message;
