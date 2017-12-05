@@ -128,7 +128,7 @@ angular
             if (ngModel.$modelValue) {
               ngModel.$setViewValue(ngModel.$modelValue.concat(model));
             } else {
-              ngModel.$setViewValue(model);
+              ngModel.$setViewValue([model]);
             }
           }
           ngModel.$commitViewValue();
@@ -160,15 +160,15 @@ angular
                 file.uploadCompleted = true;
                 file.progress = 100;
               });
-              fileResult = response.data.file;
-              _mergeDataToNgModelValue(scope.form.post ? scope.form.post(response.data) : response.data.file[0]);
+              //fileResult = response.data.file;
+              _mergeDataToNgModelValue(response.data.file[0]);
             }, function (response) {
               if (response.status > 0) {
                 file.errorMsg = response.status + ': ' + response.data.message;
               } else if (response.status == -1) {
                 file.errorMsg = "Error: trouble connecting to the server, please verify you have internet access.";
               }
-            })
+            });
             // .then(function () {
             //   if (fileResult && fileResult != null && fileResult.file)
             //     fileService.setFile(fileResult.file[0]);
