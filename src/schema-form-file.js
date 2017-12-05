@@ -37,7 +37,7 @@ angular
 
       function registerDefaultTypes() {
         function nwpSinglefileUploadDefaultProvider(name, schema, options) {
-          if (schema.type === 'array' && schema.format === 'singlefile') {
+          if (schema.type === 'object' && schema.format === 'singlefile') {
             var f = schemaFormProvider.stdFormObj(name, schema, options);
             f.key = options.path;
             f.type = 'nwpFileUpload';
