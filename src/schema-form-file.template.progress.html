@@ -7,7 +7,7 @@
             <span class="fa fa-2x" aria-hidden="true" ng-class="{'fa-check-circle-o text-success show': picFile.result && picFile.progress == 100,
                         'fa-exclamation-circle show text-danger': picFile.errorMsg,
                         'fa-refresh fa-spin fa-fw text-primary show': (picFile.progress >= 0 && picFile.progress < 100) && !picFile.errorMsg}"
-                uib-tooltip="{{ (picFile.progress >= 0 && picFile.progress < 100 && !picFile.errorMsg) ? 'Uploading...' : '' || picFile.result && !picFile.errorMsg || (picFile.errorMsg) ? 'See message below for more details.' : ''}}"
+                uib-tooltip="{{ (picFile.progress >= 0 && picFile.progress < 100 && !picFile.errorMsg) ? 'Uploading...' : picFile.result && !picFile.errorMsg ? picFile.result : (picFile.errorMsg) ? 'See message below for more details.' : ''}}"
                 tooltip-placement="top" tooltip-trigger="'mouseenter'">
                 <!--, 'hide': !picFile.progress || picFile.progress != 100-->
             </span>

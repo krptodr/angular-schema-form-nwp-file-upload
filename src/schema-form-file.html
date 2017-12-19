@@ -1,4 +1,4 @@
-<ng-form class="file-upload mb-lg" ng-schema-file schema-validate="form" sf-field-model="replaceAll" ng-model="$$value$$"
+<ng-form class="file-upload mb-lg" ng-schema-file  sf-field-model="replaceAll" schema-validate="form" ng-model="$$value$$" ng-model-options="form.ngModelOptions"
   name="uploadForm">
   <!--sf-field-model="replaceAll"schema-validate="form" sf-field-model="replaceAll"-->
   <label ng-show="form.title && form.notitle !== true" class="control-label" for="fileInputButton" ng-class="{'sr-only': !showTitle(), 'text-danger': uploadForm.$error.required && !uploadForm.$pristine}">
@@ -76,7 +76,7 @@
     <small class="text-muted" ng-show="form.description" ng-bind-html="form.description"></small>
     <div ng-if="isSinglefileUpload" ng-include="'directives/decorators/bootstrap/nwp-file/schema-form-file.template.single.html'"></div>
     <div ng-if="!isSinglefileUpload" ng-include="'directives/decorators/bootstrap/nwp-file/schema-form-file.template.multiple.html'"></div>
-    <div class="help-block mb0" ng-show="uploadForm.$error.required && !uploadForm.$pristine">{{ 'modules.attribute.fields.required.caption' | translate }}</div>
+    <div class="help-block mb0" ng-if="uploadForm.$error.required && !uploadForm.$pristine">{{ 'modules.attribute.fields.required.caption' | translate }}</div>
     <span ng-show="errorMsg" class="help-block text-danger mb0">Error: {{ errorMsg }}</span>
     <span class="help-block" sf-message="form.description"></span>
   </div>

@@ -37,7 +37,7 @@ angular
 
       function registerDefaultTypes() {
         function nwpSinglefileUploadDefaultProvider(name, schema, options) {
-          if (schema.type === 'object' && schema.format === 'singlefile') {
+          if (schema.type === 'array' && schema.format === 'singlefile') {
             var f = schemaFormProvider.stdFormObj(name, schema, options);
             f.key = options.path;
             f.type = 'nwpFileUpload';
@@ -234,7 +234,7 @@ angular
               scope.fileService.deleteFile(file.uuid);
 
             _clearErrorMsg();
-            _resetFieldNgModel(true);
+            _resetFieldNgModel(false);
             _resetFileNgModel();
 
           } else {
@@ -250,11 +250,12 @@ angular
 
         scope.validateField = function () {
           if (scope.uploadForm.file && scope.uploadForm.file.$valid && scope.picFile && !scope.picFile.$error) {
-            console.log('singlefile-form is invalid');
+            console.log('singlefile-form is valid');
           } else if (scope.uploadForm.files && scope.uploadForm.files.$valid && scope.picFiles && !scope.picFiles.$error) {
-            console.log('multifile-form is  invalid');
+            console.log('multifile-form is  valid');
           } else {
-            console.log('single- and multifile-form are valid');
+            console.log('single- and multifile-form are invalid');
+            return false;
           }
         };
 
